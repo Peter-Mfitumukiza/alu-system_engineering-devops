@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Script that configures a new Ubuntu machine to install nginx
+
+apt-get update -y
+
+apt-get install nginx -y
+
+echo "Holberton School for the win!" | sudo tee /var/www/html/index.html
+
+service nginx start
+
