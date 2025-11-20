@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Script that configures Nginx with custom HTTP response header
+
+# Update package list
+apt-get update -y
+
+# Install nginx
+apt-get install nginx -y
+
+# Create a simple HTML page with "Holberton School"
+echo "Holberton School for the win!" > /var/www/html/index.html
+
+# Create custom 404 error page
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+
+# Get the hostname
+HOSTNAME=$(hostname)
+
+# Configure custom HTTP header X-Served-By with the hostname
+# shellcheck disable=SC2154
+sed -i "/listen 80 default_server;/a \\\\n\\tadd_header X-Served-By \$hostname;" /etc/nginx/sites-available/default
+
+# Configure 301 redirect for /redirect_me
+sed -i '/listen 80 default_server;/a \\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}' /etc/nginx/sites-available/default
+
+# Configure custom 404 error page
+sed -i '/listen 80 default_server;/a \\n\terror_page 404 /404.html;\n\tlocation = /404.html {\n\t\tinternal;\n\t}' /etc/nginx/sites-available/default
+
+service nginx restart
