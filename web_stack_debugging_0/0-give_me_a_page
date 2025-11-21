@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Fix Apache server to return Hello Holberton page
-echo "Hello Holberton" > /var/www/html/index.html
+echo "apache2 is running" > /var/www/html/index.html
 service apache2 start
 echo "apache2 is running"
 
